@@ -83,10 +83,11 @@ export class PaymentService {
   }
 
   async create({ impUid, amount, currentUser }) {
+    
     const queryRunner = this.connection.createQueryRunner();
     await queryRunner.connect();
     await queryRunner.startTransaction('SERIALIZABLE');
-
+    console.log(1)
     try {
       let type;
       let period;
@@ -100,10 +101,10 @@ export class PaymentService {
         type = PAYMENT_STATUS_ENUM.DAY7;
         period = 7;
       }
-
+      console.log(2)
       const today = new Date(getToday());
       const end = new Date(getToday(period));
-
+      console.log(3)
       const paymentHistory = this.paymentRepository.create({
         impUid,
         paymentStatus: '결제',
@@ -113,7 +114,7 @@ export class PaymentService {
         paymentAmount: amount,
         user: currentUser,
       });
-
+      console.log(4)
       const paymentData = this.joinRepository.create({
         id: currentUser,
         subStart: today,
