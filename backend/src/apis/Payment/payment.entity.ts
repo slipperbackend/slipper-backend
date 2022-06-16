@@ -32,7 +32,7 @@ export class Payment {
   subEnd: Date;
 
   @Column()
-  @Field(() => Date)
+  @Field(() => Date, { nullable: true })
   subRefund: Date;
 
   @Column()
