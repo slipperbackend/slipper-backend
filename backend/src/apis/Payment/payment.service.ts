@@ -114,6 +114,8 @@ export class PaymentService {
         paymentAmount: amount,
         user: currentUser,
       });
+      console.log(paymentHistory)
+
       console.log(4)
       const paymentData = this.joinRepository.create({
         id: currentUser,
@@ -121,6 +123,8 @@ export class PaymentService {
         subEnd: end,
         subType: type,
       });
+
+      console.log(paymentData)
 
       await queryRunner.manager.save(paymentData);
       await queryRunner.manager.save(paymentHistory);
