@@ -1,0 +1,33 @@
+version: '3.7'
+
+services:
+  slipper-backend:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    env_file:
+      - ./.env.prod
+    volumes:
+      - ./src:/slipper/src
+      - ./elk:/slipper/elk
+    ports:
+      - 3000:3000
+
+  slipper-redis:
+    image: redis:latest
+    ports:
+      - 6379:6379
+
+  # elasticsearch:
+  #   image: elasticsearch:7.17.0
+  #   environment:
+  #     discovery.type: single-node
+  #   ports:
+  #     - 9200:9200
+
+  # logstash:
+  #   image: logstash:7.17.0
+  #   volumes:
+  #     - ./elk/logstash/logstash.prod.conf:/usr/share/logstash/pipeline/logstash.prod.conf
+  #     - ./elk/logstash/mysql-connector-java-8.0.28.jar:/usr/share/logstash/mysql-connector-java-8.0.28.jar
+  #     - ./elk/logstash/elastic_template.json:/usr/share/logstash/elastic_template.json

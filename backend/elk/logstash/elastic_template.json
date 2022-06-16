@@ -1,0 +1,35 @@
+{
+  "template": "slipper-elasticsearch",
+  "settings": {
+    "analysis": {
+      "analyzer": {
+        "slipper_analyzer": {
+          "type": "custom",
+          "tokenizer": ["slipper_ngram_tokenizer"],
+          "filter": ["lowercase"]
+        }
+      },
+      "tokenizer": {
+        "slipper_ngram_tokenizer": {
+          "type": "nGram",
+          "min_gram": "1",
+          "max_gram": "10"
+        }
+      },
+      "filter": {
+        "slipper_lowercase_filter": {
+          "type": "lowercase"
+        }
+      }
+    },
+    "max_ngram_diff": "10"
+  },
+  "mappings": {
+    "properties": {
+      "address": {
+        "type": "text",
+        "analyzer": "slipper_analyzer"
+      }
+    }
+  }
+}

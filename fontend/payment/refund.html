@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <title>환불하기</title>
+    <script
+      type="text/javascript"
+      src="https://code.jquery.com/jquery-1.12.4.min.js"
+    ></script>
+    <script
+      type="text/javascript"
+      src="https://cdn.iamport.kr/js/iamport.payment-1.2.0.js"
+    ></script>
+    <script
+      type="text/javascript"
+      src="https://unpkg.com/axios/dist/axios.min.js"
+    ></script>
+    <script>
+      async function myrefund() {
+        const impUid = document.getElementById("impUid").value;
+        const merchantUid = document.getElementById("merchantUid").value;
+        console.log("asdasdasdasd");
+        const data = await axios.post(
+          "http://localhost:3000/graphql",
+          {
+            query: `
+                      mutation {
+                        cancelPointTransaction(impUid: "${impUid}",  merchantUid: "${merchantUid}") {
+                          id
+                        }
+                      }
+                    `,
+          },
+          {
+            headers: {
+              authorization:
+                "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InNoc2hAbmF2ZXIiLCJzdWIiOiJkNzY3M2UzZi00MDU4LTRkMDktYTZjZC1hMWIyOGM0ZjUzNzIiLCJpYXQiOjE2NTAzNDU0OTYsImV4cCI6MTY1MDQzMTg5Nn0.ufgl-k94mOwazdSFNb93Y5ou-u4hEshoABOgs_7PYls",
+            },
+          }
+        );
+
+        console.log(data);
+      }
+    </script>
+  </head>
+  <body>
+    환불impUid:<input type="text" id="impUid" /> 환불merchantUid:<input
+      type="text"
+      id="merchantUid"
+    />
+    <button onclick="myrefund()">환불하기</button>
+  </body>
+</html>
