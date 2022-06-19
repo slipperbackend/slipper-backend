@@ -23,14 +23,30 @@ export class BoardService {
   ) {}
 
   async findOne({ boardId }) {
+    // const result = await this.boardRepository
+    //   .createQueryBuilder('board')
+    //   .leftJoinAndSelect('board.images', 'images')
+    //   .leftJoinAndSelect('board.user', 'user')
+    //   .leftJoinAndSelect('board.comment', 'comment')
+    //   .leftJoinAndSelect('comment.subComment', 'subComment')
+    //   .where('board.id = :id', { id: boardId })
+    //   .getOne();
+
     const result = await this.boardRepository
       .createQueryBuilder('board')
-      .leftJoinAndSelect('board.images', 'images')
       .leftJoinAndSelect('board.user', 'user')
-      .leftJoinAndSelect('board.comment', 'comment')
-      .leftJoinAndSelect('comment.subComment', 'subComment')
       .where('board.id = :id', { id: boardId })
       .getOne();
+
+    const images = await this.boardImageRepository.find({
+      board: boardId,
+    });
+
+    const imagesArray = images.map((e) => {
+      return e.imageUrl;
+    });
+
+    result['imagesUrl'] = imagesArray;
 
     return result;
   }

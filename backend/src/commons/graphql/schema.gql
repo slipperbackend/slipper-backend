@@ -36,7 +36,7 @@ type Payment {
   paymentStatus: String!
   subStart: DateTime!
   subEnd: DateTime!
-  subRefund: DateTime!
+  subRefund: DateTime
   paymentAmount: Int!
   impUid: String!
   subType: PAYMENT_STATUS_ENUM!
@@ -142,7 +142,7 @@ type Query {
   TEST_fetchBoards: [Board!]!
   TEST_fetchBoardsPage(page: Float, category: String, search: String): [JSONObject!]!
   TEST_fetchUser(email: String!): Join!
-  fetchBoard(boardId: String!): Board!
+  fetchBoard(boardId: String!): JSONObject!
   fetchBoardsPage(category: String, search: String, sortType: String, page: Int): [JSONObject!]!
   fetchBoardLikeCount(boardId: String): Int!
   fetchUserBoards(page: Int): [Board!]!
@@ -185,7 +185,7 @@ type Mutation {
   uploadBoardImage(files: [Upload!]!): [String!]!
   uploadProfileImage(files: [Upload!]!): [String!]!
   uploadBusinessImage(files: [Upload!]!): [String!]!
-  createPayment(impUid: String!, amount: Float!): Payment!
+  createPayment(impUid: String!, amount: Int!): Payment!
   refundPayment(impUid: String!): Payment!
   updatePayment(userId: String!): String!
   createComment(boardId: String!, content: String!): JSONObject!
