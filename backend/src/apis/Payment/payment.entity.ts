@@ -1,5 +1,11 @@
 import { Field, Int, ObjectType, registerEnumType } from '@nestjs/graphql';
-import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
+import {
+  Column,
+  CreateDateColumn,
+  Entity,
+  ManyToOne,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
 import { Join } from '../join/entities/join.entity';
 
 export enum PAYMENT_STATUS_ENUM {
@@ -18,6 +24,9 @@ export class Payment {
   @PrimaryGeneratedColumn('uuid')
   @Field(() => String)
   id: string;
+
+  @CreateDateColumn()
+  createdAt: Date;
 
   @Column()
   @Field(() => String)

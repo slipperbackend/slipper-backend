@@ -16,9 +16,11 @@ export class PaymentResolver {
   @Query(() => [Payment])
   async fetchPayments(
     @CurrentUser() currentUser: ICurrentUser, //
+    @Args('page', { type: () => Int, nullable: true }) page: number,
   ) {
     const result = await this.paymentService.findPayment({
       userId: currentUser.id,
+      page,
     });
 
     return result;
@@ -29,7 +31,7 @@ export class PaymentResolver {
   @Mutation(() => Payment)
   async createPayment(
     @Args('impUid') impUid: string,
-    @Args('amount', { type: () => Int}) amount: number,
+    @Args('amount', { type: () => Int }) amount: number,
     @CurrentUser() currentUser: ICurrentUser,
   ) {
     return await this.paymentService.create({

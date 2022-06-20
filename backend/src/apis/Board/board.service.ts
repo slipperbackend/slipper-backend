@@ -186,7 +186,6 @@ export class BoardService {
 
     if (newImages !== undefined) {
       if (newImages[0] !== oldImages[0]) {
-        console.log('hi');
         newData.thumbnail = newImages[0];
       } else if (newImages.length === 0) {
         newData.thumbnail = null;

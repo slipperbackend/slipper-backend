@@ -6,7 +6,7 @@ import {
   UnprocessableEntityException,
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Connection, Repository } from 'typeorm';
+import { Connection, getRepository, Repository } from 'typeorm';
 import { Join } from '../join/entities/join.entity';
 import { Payment, PAYMENT_STATUS_ENUM } from './payment.entity';
 import { getToday } from 'src/commons/libraries/utils';
@@ -74,20 +74,27 @@ export class PaymentService {
       throw new ConflictException(`이미 결제된 아이디입니다. [${impUid}]`);
   }
 
-  async findPayment({ userId }) {
-    const result = await this.paymentRepository.find({
-      user: userId,
-    });
+  async findPayment({ userId, page }) {
+    // const result = await this.paymentRepository.find({
+    //   user: userId,
+    // });
+    const result = await getRepository(Payment)
+      .createQueryBuilder('payment')
+      .leftJoinAndSelect('payment.user', 'user')
+      .where('user.id = :userId', { userId: userId })
+      .orderBy('payment.createdAt', 'ASC')
+      .limit(10)
+      .offset(10 * (page - 1))
+      .getMany();
 
     return result;
   }
 
   async create({ impUid, amount, currentUser }) {
-    
     const queryRunner = this.connection.createQueryRunner();
     await queryRunner.connect();
     await queryRunner.startTransaction('SERIALIZABLE');
-    
+
     try {
       let type;
       let period;
@@ -104,7 +111,7 @@ export class PaymentService {
 
       const today = new Date(getToday());
       const end = new Date(getToday(period));
-      console.log(1)
+
       const paymentHistory = this.paymentRepository.create({
         impUid,
         paymentStatus: '결제',
@@ -114,17 +121,15 @@ export class PaymentService {
         paymentAmount: amount,
         user: currentUser,
       });
-      console.log(paymentHistory)
+      console.log(paymentHistory);
 
-      console.log(2)
       const paymentData = this.joinRepository.create({
         id: currentUser,
         subStart: today,
         subEnd: end,
         subType: type,
       });
-
-      console.log(paymentData)
+      console.log(paymentData);
 
       await queryRunner.manager.save(paymentData);
       await queryRunner.manager.save(paymentHistory);
