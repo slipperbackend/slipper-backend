@@ -75,7 +75,7 @@ export class CrontabService {
         let check = true;
         for (let x = 0; x < databaseImageLinks.length; x++) {
           if (
-            `https://storage.googleapis.com/slipper-storage/${googleLinks[i]}` ===
+            `https://storage.googleapis.com/${process.env.STORAGE_BUCKET}/${googleLinks[i]}` ===
             databaseImageLinks[x].imageUrl
           ) {
             check = false;

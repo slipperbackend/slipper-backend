@@ -47,6 +47,8 @@ export class BoardService {
     });
 
     result['imagesUrl'] = imagesArray;
+    console.log('hi');
+    console.log(result);
 
     return result;
   }
@@ -182,10 +184,13 @@ export class BoardService {
     });
     const { images: oldImages, user, ...oldData } = oldBoard;
 
-    if (newImages[0] !== oldImages[0]) {
-      newData.thumbnail = newImages[0];
-    } else if (newImages.length === 0) {
-      newData.thumbnail = null;
+    if (newImages !== undefined) {
+      if (newImages[0] !== oldImages[0]) {
+        console.log('hi');
+        newData.thumbnail = newImages[0];
+      } else if (newImages.length === 0) {
+        newData.thumbnail = null;
+      }
     }
 
     const newBoard = {
