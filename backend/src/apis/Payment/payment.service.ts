@@ -149,14 +149,28 @@ export class PaymentService {
     await queryRunner.startTransaction('SERIALIZABLE');
 
     try {
-      const result = this.paymentRepository.findOne({
+      const refundCheck = await this.paymentRepository.findOne({
+        impUid,
+        paymentStatus: '환불',
+      });
+
+      if (refundCheck) {
+        console.log(refundCheck);
+        throw new Error('이미 환불한 내역입니다');
+      }
+
+      const result = await this.paymentRepository.findOne({
         impUid,
         user: currentUser,
       });
 
+      result.user = currentUser;
+      delete result.id;
+      const today = new Date(getToday());
       const paymentHistory = this.paymentRepository.create({
         ...result,
         paymentStatus: '환불',
+        subRefund: today,
       });
 
       const paymentData = this.joinRepository.create({
@@ -173,6 +187,7 @@ export class PaymentService {
       return paymentHistory;
     } catch (error) {
       await queryRunner.rollbackTransaction();
+      return error;
     } finally {
       await queryRunner.release();
     }
