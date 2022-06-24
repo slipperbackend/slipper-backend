@@ -29,8 +29,8 @@ export class Payment {
   createdAt: Date;
 
   @Column()
-  @Field(() => String)
-  paymentStatus: string;
+  @Field(() => Int)
+  paymentStatus: number;
 
   @Column()
   @Field(() => Date)

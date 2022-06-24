@@ -114,7 +114,7 @@ export class PaymentService {
 
       const paymentHistory = this.paymentRepository.create({
         impUid,
-        paymentStatus: '결제',
+        paymentStatus: 1,
         subStart: today,
         subEnd: end,
         subType: type,
@@ -129,7 +129,6 @@ export class PaymentService {
         subEnd: end,
         subType: type,
       });
-      console.log(paymentData);
 
       await queryRunner.manager.save(paymentData);
       await queryRunner.manager.save(paymentHistory);
@@ -151,7 +150,7 @@ export class PaymentService {
     try {
       const refundCheck = await this.paymentRepository.findOne({
         impUid,
-        paymentStatus: '환불',
+        paymentStatus: 2,
       });
 
       if (refundCheck) {
@@ -167,11 +166,13 @@ export class PaymentService {
       delete result.createdAt;
       delete result.id;
       const today = new Date(getToday());
+
       const paymentHistory = this.paymentRepository.create({
         ...result,
-        paymentStatus: '환불',
+        paymentStatus: 2,
         subRefund: today,
       });
+      console.log(paymentHistory);
 
       const paymentData = this.joinRepository.create({
         id: currentUser,

@@ -33,7 +33,7 @@ type Comment {
 
 type Payment {
   id: String!
-  paymentStatus: String!
+  paymentStatus: Int!
   subStart: DateTime!
   subEnd: DateTime!
   subRefund: DateTime
