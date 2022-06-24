@@ -43,7 +43,7 @@ export class PaymentResolver {
 
   // 구독권 환불
   @UseGuards(GqlAuthAccessGuard)
-  @Mutation(() => Payment)
+  @Mutation(() => String)
   async refundPayment(
     @Args('impUid') impUid: string,
     @CurrentUser() currentUser: ICurrentUser,

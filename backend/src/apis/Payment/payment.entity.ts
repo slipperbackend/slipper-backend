@@ -29,15 +29,15 @@ export class Payment {
   createdAt: Date;
 
   @Column()
-  @Field(() => String, { nullable: true })
+  @Field(() => String)
   paymentStatus: string;
 
   @Column()
-  @Field(() => Date, { nullable: true })
+  @Field(() => Date)
   subStart: Date;
 
   @Column()
-  @Field(() => Date, { nullable: true })
+  @Field(() => Date)
   subEnd: Date;
 
   @Column({ default: null })
@@ -45,15 +45,15 @@ export class Payment {
   subRefund: Date;
 
   @Column()
-  @Field(() => Int, { nullable: true })
+  @Field(() => Int)
   paymentAmount: number;
 
   @Column()
-  @Field(() => String, { nullable: true })
+  @Field(() => String)
   impUid: string;
 
   @Column({ type: 'enum', enum: PAYMENT_STATUS_ENUM }) //
-  @Field(() => PAYMENT_STATUS_ENUM, { nullable: true })
+  @Field(() => PAYMENT_STATUS_ENUM)
   subType: string;
 
   @ManyToOne(() => Join, (user) => user.payment)

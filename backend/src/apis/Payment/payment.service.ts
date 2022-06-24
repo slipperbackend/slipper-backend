@@ -155,7 +155,6 @@ export class PaymentService {
       });
 
       if (refundCheck) {
-        console.log(refundCheck);
         throw new Error('이미 환불한 내역입니다');
       }
 
@@ -165,6 +164,7 @@ export class PaymentService {
       });
 
       result.user = currentUser;
+      delete result.createdAt;
       delete result.id;
       const today = new Date(getToday());
       const paymentHistory = this.paymentRepository.create({
@@ -184,7 +184,7 @@ export class PaymentService {
       await queryRunner.manager.save(paymentHistory);
       await queryRunner.commitTransaction();
 
-      return paymentHistory;
+      return `환불 완료 - ${paymentHistory.impUid}`;
     } catch (error) {
       await queryRunner.rollbackTransaction();
       return error;
